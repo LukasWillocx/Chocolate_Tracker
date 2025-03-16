@@ -5,17 +5,32 @@ library(scrapeR)
 # Example function to scrape prices from a website
 scrape_prices <- function(url) {
   page <- read_html(url)
-  product_name <- page %>% html_node("css_selector_for_product_name") %>% html_text()
-  price <- page %>% html_node('product-price-6761 > span:nth-child(1)') %>% html_text()
+  price <- page %>% html_node("div.grouped-product-table__product:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:nth-child(2)") %>% html_text()
+  price <- extract_number(price)
+  product_name <- page %>% html_node('h1.page-title') %>% html_text()
   date <- Sys.Date()
   
   data.frame(
     Product = product_name,
     Price = price,
     Date = date,
-    Source = "ShopName"  # Replace with actual shop name
+    Source = "De Notenshop"  # Replace with actual shop name
   )
 }
+
+
+extract_number <- function(text) {
+  numbers <- gsub("[^,]?[0-9]+?[,][0-9]+", "", text)
+  if (length(numbers) > 0){
+    first_dec_num <- gsub("([^,]*)", "\\1", numbers)
+    return(as.numeric(gsub("[^,]?", "", first_dec_num)))
+  }
+  else {
+    return(NA)
+  }
+ }
+
+
 
 # Example URLs (replace with actual URLs)
 urls <- c("http://shop1.com/product", "http://shop2.com/product", "http://shop3.com/product")
