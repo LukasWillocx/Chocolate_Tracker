@@ -1,8 +1,7 @@
-library(rvest)
-library(dplyr)
-library(scrapeR)
+# Three functions to scrape the pricing on callebaut callets @ three different vendors
+# The designated HTML node css selectors are acquired by inspecting the desired element in a browser
+# Price variable requires additional formatting, (getting rid of units and making them numeric)
 
-# Example function to scrape prices from a website
 scrape_prices_denotenshop <- function(url,callebaut_id) {
   page <- read_html(url)
   price <- page %>% 
@@ -58,34 +57,4 @@ scrape_prices_bol <- function(url,callebaut_id) {
   )
 }
 
-urls_shopcallebaut <- list(c('https://shop.callebaut.com/products/recipe-n-823?variant=49363128287567','823'),
-                           c('https://shop.callebaut.com/products/recipe-n-811?variant=42586035093643','811'),
-                           c('https://shop.callebaut.com/products/finest-belgian-white-chocolate-recipe-n-w2-white-callets?variant=49388530073935','W2'))
 
-urls_notenshop <- list(c("https://www.denotenshop.be/callebaut-chocolade-druppels-melk.html", '823'),
-          c("https://www.denotenshop.be/callebaut-chocolade-druppels-puur-54.html", '811'),
-          c("https://www.denotenshop.be/chocolade-druppels-wit.html",'W2'))
-
-urls_bol <- list(c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-melk-1-kg/9300000004321394/?s2a=&bltgh=qfA5Ai3k6CJ2VcjgqiRO-Q.2_37_38.39.FeatureOption#productTitle','823'),
-                 c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-puur-1-kg/9300000001107428/?s2a=&bltgh=qfA5Ai3k6CJ2VcjgqiRO-Q.2_37_38.39.FeatureOption#productTitle','811'),
-                 c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-wit-1-kg/9300000004079481/?s2a=&bltgh=pHW0zcU8aPzmpmLfQJZBoQ.2_43_44.45.FeatureOption#productTitle','W2'))
-
-choc_price_df<-read.csv2('chocolate_prices.csv')
-
-for (i in urls_notenshop){
-  price_data<-scrape_prices_denotenshop(i[1],i[2])
-  choc_price_df<-rbind(choc_price_df,price_data)
-}
-
-for (i in urls_shopcallebaut){
-  price_data <- scrape_prices_shopcallebaut(i[1],i[2])
-  choc_price_df<-rbind(choc_price_df,price_data)
-}
-
-for (i in urls_bol){
-  price_data <- scrape_prices_bol(i[1],i[2])
-  choc_price_df<-rbind(choc_price_df,price_data)
-}
-
-
-write.csv2(choc_price_df, "chocolate_prices.csv", row.names = FALSE)
