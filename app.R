@@ -3,6 +3,9 @@ library(shinythemes)
 library(shinycssloaders)
 library(rvest)
 library(dplyr)
+library(plotly)
+library(ggplot2)
+library(lubridate)
 
 ui <- fluidPage(
   includeCSS("app_styles.css"),
@@ -29,15 +32,52 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       width = 3,
-      h4("Navigation"),
+      tags$div(style = "text-align: center",h4("Information")),
       hr(),
-      p("Additional inputs, context, etc.")
+      p("In a world where cocoa products and particularly chocolate sprinkles are getting ridiculously expensive, I've come to the conclusion that buying genuine
+         callebaut callets might prove to be more economically viable. It also doesn't hurt that, at least according to my tastebuds, it even tastes
+        better."),
+      hr(),
+      tags$div(style = "text-align: center",h5('Chocolate callets')),
+      hr(),
+      tags$div(
+        class = "image-text-container",
+        
+        # Image section
+        tags$img(src = '811_callets.png', 
+                 class = 'image-container'),
+      p('N° 811 - Dark chocolate, consisting of 54.5% cocoa products and a fat content of 36.6%.')
+      ),
+      hr(),
+      tags$div(
+        class = "image-text-container",
+        p('N° 823 - Milk chocolate, consisting of 33.6% cocoa products and a fat content of 36.2%.'),
+        # Image section
+        tags$img(src = '823_callets.png', 
+                 class = 'image-container2'),
+      ),
+      hr(),
+      tags$div(
+        class = "image-text-container",
+        
+        # Image section
+        tags$img(src = 'w2_callets.png', 
+                 class = 'image-container'),
+        p('N° W2 - White chocolate, consisting of 28% cocoa products and a fat content of 35.8%.')
+      ),
+      hr(),
+      tags$div(style = "text-align: center",h5('Webshops / Online Vendors')),
+      hr(),
+      tags$div(style= 'image-align: center', 
+               img(src='bol.png',height='65px'),
+               img(src='Notenshop.webp',height='65px'),
+               img(src='callebaut.png',height='65px')), 
     ),
     
     mainPanel(
       width = 9,
       column(12, div(class = "custom-panel",
-                                 
+                     plotlyOutput('pricing',height='900px'),            
                      )),
         ),
       )
@@ -46,38 +86,12 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
-  source('functions.R')
   
-  urls_shopcallebaut <- list(c('https://shop.callebaut.com/products/recipe-n-823?variant=49363128287567','823'),
-                             c('https://shop.callebaut.com/products/recipe-n-811?variant=42586035093643','811'),
-                             c('https://shop.callebaut.com/products/finest-belgian-white-chocolate-recipe-n-w2-white-callets?variant=49388530073935','W2'))
+   source('functions.R')
   
-  urls_notenshop <- list(c("https://www.denotenshop.be/callebaut-chocolade-druppels-melk.html", '823'),
-                         c("https://www.denotenshop.be/callebaut-chocolade-druppels-puur-54.html", '811'),
-                         c("https://www.denotenshop.be/chocolade-druppels-wit.html",'W2'))
-  
-  urls_bol <- list(c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-melk-1-kg/9300000004321394/?s2a=&bltgh=qfA5Ai3k6CJ2VcjgqiRO-Q.2_37_38.39.FeatureOption#productTitle','823'),
-                   c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-puur-1-kg/9300000001107428/?s2a=&bltgh=qfA5Ai3k6CJ2VcjgqiRO-Q.2_37_38.39.FeatureOption#productTitle','811'),
-                   c('https://www.bol.com/be/nl/p/callebaut-chocolade-callets-wit-1-kg/9300000004079481/?s2a=&bltgh=pHW0zcU8aPzmpmLfQJZBoQ.2_43_44.45.FeatureOption#productTitle','W2'))
-  
-  choc_price_df<-read.csv2('chocolate_prices.csv')
-  
-  for (i in urls_notenshop){
-    price_data<-scrape_prices_denotenshop(i[1],i[2])
-    choc_price_df<-rbind(choc_price_df,price_data)
-  }
-  
-  for (i in urls_shopcallebaut){
-    price_data <- scrape_prices_shopcallebaut(i[1],i[2])
-    choc_price_df<-rbind(choc_price_df,price_data)
-  }
-  
-  for (i in urls_bol){
-    price_data <- scrape_prices_bol(i[1],i[2])
-    choc_price_df<-rbind(choc_price_df,price_data)
-  }
-  
-  write.csv2(choc_price_df, "chocolate_prices.csv", row.names = FALSE)
+  output$pricing<-renderPlotly({
+    plot_prices('chocolate_prices.csv')
+  })
 }
 
 shinyApp(ui = ui, server = server)

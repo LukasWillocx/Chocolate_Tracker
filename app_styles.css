@@ -94,4 +94,20 @@ select, .shiny-input-container {
   border-bottom: 3px solid var(--primary-color) !important;
 }
 
+.image-text-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
 
+.image-container {
+  width: 180px; /* Adjust as needed */
+  height: auto;
+  margin-right: 10px;
+}
+
+.image-container2 {
+  width: 180px; /* Adjust as needed */
+  height: auto;
+  margin-left: 10px;
+}
