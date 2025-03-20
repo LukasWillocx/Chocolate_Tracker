@@ -35,15 +35,12 @@ ui <- fluidPage(
       tags$div(style = "text-align: center",h4("Information")),
       hr(),
       p("In a world where cocoa products and particularly chocolate sprinkles are getting ridiculously expensive, I've come to the conclusion that buying genuine
-         callebaut callets might prove to be more economically viable. It also doesn't hurt that, at least according to my tastebuds, it even tastes
-        better."),
+         callebaut callets might prove to be more economically viable. The three main chocolate categories of white, milk and dark are being considered."),
       hr(),
       tags$div(style = "text-align: center",h5('Chocolate callets')),
       hr(),
       tags$div(
         class = "image-text-container",
-        
-        # Image section
         tags$img(src = '811_callets.png', 
                  class = 'image-container'),
       p('N° 811 - Dark chocolate, consisting of 54.5% cocoa products and a fat content of 36.6%.')
@@ -52,15 +49,12 @@ ui <- fluidPage(
       tags$div(
         class = "image-text-container",
         p('N° 823 - Milk chocolate, consisting of 33.6% cocoa products and a fat content of 36.2%.'),
-        # Image section
         tags$img(src = '823_callets.png', 
                  class = 'image-container2'),
       ),
       hr(),
       tags$div(
         class = "image-text-container",
-        
-        # Image section
         tags$img(src = 'w2_callets.png', 
                  class = 'image-container'),
         p('N° W2 - White chocolate, consisting of 28% cocoa products and a fat content of 35.8%.')
@@ -87,8 +81,10 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
-   source('functions.R')
+  # Acquire the required functions for plotting
+  source('functions.R')
   
+  # Rendering the interactive pricing plot
   output$pricing<-renderPlotly({
     plot_prices('chocolate_prices.csv')
   })

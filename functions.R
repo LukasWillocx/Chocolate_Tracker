@@ -78,7 +78,8 @@ plot_prices <- function(file_path){
       axis.title = element_text(color = "#7aa6a1"),
       axis.ticks = element_line(color = "#7aa6a1"),
       axis.text = element_text(color = "#7aa6a1"))+
-    labs(y='Pricing (per kg)')
+    labs(y='Pricing (per kg)',x='')+
+    scale_color_manual(values=c('#0000aa',"#ff9900","#6e325c"))
 }
 
 
