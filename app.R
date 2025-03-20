@@ -55,7 +55,7 @@ ui <- fluidPage(
       hr(),
       tags$div(
         class = "image-text-container",
-        tags$img(src = 'w2_callets.png', 
+        tags$img(src = 'W2_callets.png', 
                  class = 'image-container'),
         p('N° W2 - White chocolate, consisting of 28% cocoa products and a fat content of 35.8%.')
       ),
