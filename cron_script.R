@@ -6,6 +6,9 @@ library(rvest)
 library(dplyr)
 library(lubridate)
 
+# Set the working directory to the server directory here it'll be 
+# setwd("srv/shiny-server/Chocolate_Tracker") 
+
 ##### Duplicate from the functions.R ###########################################
 scrape_prices_denotenshop <- function(url,callebaut_id) {
   page <- read_html(url)
@@ -62,9 +65,6 @@ scrape_prices_bol <- function(url,callebaut_id) {
   )
 }
 ################################################################################
-
-
-
 
 urls_shopcallebaut <- list(c('https://shop.callebaut.com/products/recipe-n-823?variant=49363128287567','823'),
                            c('https://shop.callebaut.com/products/recipe-n-811?variant=42586035093643','811'),
